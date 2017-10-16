@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html ng-app="yt">
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <script type="text/javascript" src="vendor/angular/js/angular.min.js"></script>
+    <script type="text/javascript" src="js/youtube.js"></script>
+</head>
+<body ng-controller="YTController as yt">
+
+<div ng-repeat="video in yt.videos">
+    <h3 product-title></h3>
+    <p>Title: {{video.title}}</p>
+    <p>Description: {{video.description}}</p>
+    <p>URL: {{video.url}}</p>
+    <p>Thumbnail: {{video.thumbnail}}</p>
+    <img ng-src="{{video.thumbnail}}"/>
+    <button>Assistir no Youtube</button>
+</div>
+</body>
+</html>
