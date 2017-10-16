@@ -50,7 +50,6 @@ def lambda_handler(event, context):
 
         topic.publish(Subject="Julia Minegirl website deployed", Message="Julia Minegirl website deployed successfully")
         print "[Info] Job done!"
-        print "[Info] Job: " + str(job)
         if codepipeline:
             codepipeline.put_job_success_result(jobId=job["id"])
     except: # catch *all* exceptions

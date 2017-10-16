@@ -6,5 +6,9 @@ phases:
       - echo Nothing to do yet
 artifacts:
   files:
-    - '*.html'
+    - '_v.001/*'
+    - 'css/*'
     - 'img/*'
+    - 'js/*'
+    - 'vendor/*'
+    - '*.html'
