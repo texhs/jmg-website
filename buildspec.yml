@@ -9,4 +9,5 @@ artifacts:
     - 'css/*'
     - 'img/*'
     - 'js/*'
+    - 'vendor/**/*'
     - '*.html'
