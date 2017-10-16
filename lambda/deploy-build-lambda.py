@@ -22,7 +22,7 @@ def lambda_handler(event, context):
 
         print "Building website from " + str(location)
         s3 = boto3.resource('s3', config=Config(signature_version='s3v4'))
-        website_bucket = s3.Bucket('juliaminegirl.com.br')
+        website_bucket = s3.Bucket('www.juliaminegirl.com.br')
         build_bucket = s3.Bucket(location["bucketName"])
 
         website_zip = StringIO.StringIO()
@@ -31,6 +31,7 @@ def lambda_handler(event, context):
         with zipfile.ZipFile(website_zip) as myzip:
             for nm in myzip.namelist():
                 obj=myzip.open(nm)
+                print nm
                 website_bucket.upload_fileobj(obj, nm, ExtraArgs={'ContentType': mimetypes.guess_type(nm)[0]})
                 website_bucket.Object(nm).Acl().put(ACL='public-read')
 
@@ -40,5 +41,5 @@ def lambda_handler(event, context):
             codepipeline = boto3.client('codepipeline')
             codepipeline.put_job_success_result(jobId=job["id"])
     except:
-        topic.publish(Subject="Julia Minegirl website deploy Failed", Message="The Julia Minegirl website was not deployed successfully")
+        topic.publish(Subject="Julia Minegirl website deploy FAILED", Message="The Julia Minegirl website was NOT deployed successfully")
     return 'Hello from Lambda'
