@@ -58,6 +58,6 @@ def lambda_handler(event, context):
         print "[Error]" + str(e)
         topic.publish(Subject="Deploy FAILED", Message="The Julia Minegirl website was NOT deployed successfully: " + str(e))
         if codepipeline:
-            codepipeline.put_job_failure_result(jobId=job["id"])
+            codepipeline.put_job_failure_result(jobId=job["id"], failureDetails=str(e))
 
     return 'Hello from Lambda'
