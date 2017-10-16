@@ -48,14 +48,15 @@ def lambda_handler(event, context):
                 website_bucket.upload_fileobj(obj, nm, ExtraArgs={'ContentType': mimetypes.guess_type(nm)[0]})
                 website_bucket.Object(nm).Acl().put(ACL='public-read')
 
-        topic.publish(Subject="Julia Minegirl website deployed", Message="Julia Minegirl website deployed successfully")
+        topic.publish(Subject="Deploy OK", Message="Julia Minegirl website deployed successfully")
         print "[Info] Job done!"
+        print "[Info] Job: " + str(job)
         if codepipeline:
             codepipeline.put_job_success_result(jobId=job["id"])
     except: # catch *all* exceptions
         e = sys.exc_info()[0]
         print "[Error]" + str(e)
-        topic.publish(Subject="Julia Minegirl website deploy FAILED", Message="The Julia Minegirl website was NOT deployed successfully: " + str(e))
+        topic.publish(Subject="Deploy FAILED", Message="The Julia Minegirl website was NOT deployed successfully: " + str(e))
         if codepipeline:
             codepipeline.put_job_failure_result(jobId=job["id"])
 
