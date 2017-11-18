@@ -3,7 +3,8 @@ from boto3.dynamodb.conditions import Key, Attr
 import json
 import httplib
 import os
-import datetime
+import time
+from datetime import datetime, timedelta
 
 def storeYoutubeInfoAtDatabase(result):
     dynamodb = boto3.resource('dynamodb')
@@ -12,7 +13,7 @@ def storeYoutubeInfoAtDatabase(result):
         Item={
             'id' : 1,
             'result' : result,
-            'datetime': str(datetime.datetime.now())
+            'datetime': str(datetime.now())
         }
     )
 
@@ -22,12 +23,23 @@ def retrieveYoutubeInfoFromDatabase():
     record = table.query(
         KeyConditionExpression=Key('id').eq(1)
     )
-    return record['Items'][0]
+    if record and record['Items']:
+        return record['Items'][0]
 
 def lambda_handler(event, context):
 
-    #record = retrieveYoutubeInfoFromDatabase()
-    #return record['result']
+    record = retrieveYoutubeInfoFromDatabase()
+    if record:
+        print "Agora: " + str(datetime.now())
+        print "Data hora do registro no BD: " + str(record['datetime'])
+        age = datetime.now() - datetime.strptime(record['datetime'][:19], '%Y-%m-%d %H:%M:%S')
+
+        print "Age: " + str(age)
+        if (age <= timedelta(minutes = 1)):
+            print "[INFO] The age is smaller than 1 minute. Let's reuse the cached information."
+            return record['result']
+
+    print "[INFO] The age is greater than 1 minute. Let's query Youtube."
 
     # Obtain environment variables
     URL = os.environ['YOUTUBE_API_URL']
@@ -55,7 +67,9 @@ def lambda_handler(event, context):
         video['title'] = snippet['title']
         video['url'] = YOUTUBE_WATCH_URL + item['id']['videoId']
         video['thumbnail'] = snippet['thumbnails']['high']['url']
+        print str(snippet['thumbnails'])
         result.append(video)
 
     storeYoutubeInfoAtDatabase(result)
+    print "[RESULT] " + str(result)
     return result
