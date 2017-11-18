@@ -5,7 +5,7 @@ import httplib
 import os
 import datetime
 
-def storeYoutubeInfo(result):
+def storeYoutubeInfoAtDatabase(result):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ['DB_YOUTUBE_INFO_TABLE_NAME'])
     table.put_item(
@@ -16,7 +16,7 @@ def storeYoutubeInfo(result):
         }
     )
 
-def retrieveYoutubeInfo():
+def retrieveYoutubeInfoFromDatabase():
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(os.environ['DB_YOUTUBE_INFO_TABLE_NAME'])
     record = table.query(
@@ -26,8 +26,8 @@ def retrieveYoutubeInfo():
 
 def lambda_handler(event, context):
 
-    record = retrieveYoutubeInfo()
-    return record['result']
+    #record = retrieveYoutubeInfoFromDatabase()
+    #return record['result']
 
     # Obtain environment variables
     URL = os.environ['YOUTUBE_API_URL']
@@ -45,16 +45,17 @@ def lambda_handler(event, context):
     data = json.loads(text)
 
     # Iterate over the JSON objects and create a customized result to return
-    result = {}
+    result = []
     index = 0
     for item in data['items']:
         snippet = item['snippet']
         index = index + 1
         video = {}
+        video['index'] = str(index)
         video['title'] = snippet['title']
         video['url'] = YOUTUBE_WATCH_URL + item['id']['videoId']
         video['thumbnail'] = snippet['thumbnails']['high']['url']
-        result['video' + str(index)] = video
+        result.append(video)
 
-    storeYoutubeInfo(result)
+    storeYoutubeInfoAtDatabase(result)
     return result
