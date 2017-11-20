@@ -1,6 +1,9 @@
 /* BASE STYLES
 ============================================================================= */
-html         { overflow-y:hidden; }
+html         {
+  /*overflow-y:hidden;*/
+}
+
 .page        {
 	bottom:0;
 	padding-top:200px;
@@ -16,7 +19,12 @@ html         { overflow-y:hidden; }
 
 /* PAGES
 ============================================================================= */
-.page-home 		{ background:#00D0BC; color:#00907c; }
+.page-home 		{
+  /*background:#00D0BC;
+  color:#00907c; */
+  background: url(../img/backgrounds/section_home.jpg) no-repeat center fixed;
+  background-size: cover;
+}
 .page-about 	{ background:#E59400; color:#a55400; }
 .page-contact 	{ background:#ffa6bb; color:#9e0000; }
 
@@ -152,4 +160,23 @@ html         { overflow-y:hidden; }
 }
 @keyframes rotateOutNewspaper {
 	to { transform: translateZ(-3000px) rotateZ(360deg); opacity: 0; }
+}
+
+/* MORE STYLES
+============================================================================= */
+.rounded_corners {
+  border-radius: 25px;
+  background: #73AD21;
+  padding: 20px;
+  width: 95%;
+  height: 95% !important;
+  min-height: 95%;
+  align: center;
+  text-align:center;
+}
+
+.section_home  {
+  background: url(img/backgrounds/section_home.jpg) no-repeat center fixed;
+  background-size: cover;
+  min-height: 95%;
 }
