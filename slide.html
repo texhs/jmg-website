@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="plunker" >
+
+ <head>
+    <!-- adding  script files -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.js"> </script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"> </script>
+    <script src="app.js"></script>
+
+    <!-- adding  css files -->
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
+  </head>
+  <body>
+           <div class="container" ng-controller="CarouselCtrl">
+                <div class="offsetspan6">
+                     <carousel interval="myInterval">
+                          <slide ng-repeat="slide in slides" active="slide.active">
+                                <img class="image-circle" ng-src="{{slide.image}}"    style="margin:auto;"/>
+                         <div class="carousel-caption">
+                             <h4>Slide {{$index}}</h4>
+                             <p>{{slide.text}}</p>
+                       </div>
+                       </slide>
+                </carousel>
+          </div>
+     </div>
+  </div>
+  </body>
+
+</html>
